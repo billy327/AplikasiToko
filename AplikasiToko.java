@@ -1835,20 +1835,7 @@ public class AplikasiToko extends JFrame{
        					char[] Password = PasswordField.getPassword();           
        					String inputPassword = new String(Password);           
        					MessageDigest md=null;           
-       					try{             
-       						md = MessageDigest.getInstance("SHA-256");           
-       					}      
-       					catch (Exception ex){             
-       						JOptionPane.showMessageDialog(null,"Kesalahan pada hash SHA-256\n"+ex,"Kesalahan",JOptionPane.ERROR_MESSAGE);           
-       					}           
-       					md.update(inputPassword.getBytes());            
-       					byte bytePassword[] = md.digest();           
-       					StringBuffer sb = new StringBuffer();           
-       					int i;           
-       					for (i = 0; i < bytePassword.length; i++) {             
-       						sb.append(Integer.toString((bytePassword[i] & 0xff) + 0x100, 16).substring(1));           
-       					}           
-       					inputPassword = sb.toString();           
+ 
        					Connection cn = null;           
        					try {             
        						cn = DriverManager.getConnection(StringConnection);           
@@ -1860,7 +1847,7 @@ public class AplikasiToko extends JFrame{
        					if (!JDBC_Err){             
        						try {               
        							cn = DriverManager.getConnection(StringConnection);               
-       							String SQLStatemen = "Select * from TbUser where IDUser='"+TxtIDUserUserAccount.getText()+"' and PasswordUser='"+TxtPasswordLogin.getText()+"'";               
+       							String SQLStatemen = "Select * from tbuser where iduser="+1+" and passworduser='"+123+"'";               
        							Statement sta = cn.createStatement();               
        							ResultSet rset = sta.executeQuery(SQLStatemen);               
        							rset.next();               
@@ -1884,12 +1871,7 @@ public class AplikasiToko extends JFrame{
        										if (inputPassword.equals(retypePassword)){                       
        											md = MessageDigest.getInstance("SHA-256");                       
        											md.update(inputPassword.getBytes());                        
-       											bytePassword = md.digest();                       
-       											sb = new StringBuffer();                       
-       											for (i = 0; i < bytePassword.length; i++) {                         
-       												sb.append(Integer.toString((bytePassword[i] & 0xff) + 0x100, 16).substring(1));                       
-       											}                       
-       											inputPassword = sb.toString();                       
+       											                
        											SQLStatemen = "update TbUser set PasswordUser='"+inputPassword+                                                     
        															"' where IDUser='"+ TxtIDUserUserAccount.getText()+"'";                       
        											sta = cn.createStatement();                       
@@ -2255,20 +2237,7 @@ public class AplikasiToko extends JFrame{
    				if (TxtIDUserLogin.getText().trim().length()>0){           
    					char[] Password = TxtPasswordLogin.getPassword();                         
    					String inputPassword = new String(Password);           
-   					MessageDigest md=null;           
-   					try{             
-   						md = MessageDigest.getInstance("SHA-256");           
-   					} catch (Exception ex){
-   						JOptionPane.showMessageDialog(null,"Kesalahan pada hash SHA-256\n"+ex,"Kesalahan",JOptionPane.ERROR_MESSAGE);           
-   					}           
-   					md.update(inputPassword.getBytes());            
-   					byte bytePassword[] = md.digest();           
-   					StringBuffer sb = new StringBuffer();           
-   					int i;           
-   					for (i = 0; i < bytePassword.length; i++) {             
-   						sb.append(Integer.toString((bytePassword[i] & 0xff) + 0x100, 16).substring(1));           
-   					}           
-   					inputPassword = sb.toString();           
+   					MessageDigest md=null;                   
    					Connection cn = null;                     
    					try {             
    						cn = DriverManager.getConnection(StringConnection);           
@@ -2279,7 +2248,7 @@ public class AplikasiToko extends JFrame{
    					if (!JDBC_Err){             
    						try {               
    							cn = DriverManager.getConnection(StringConnection);               
-   							String SQLStatemen = "Select * from TbUser where IDUser='"+ TxtIDUserLogin.getText().trim()+"' and PasswordUser='"+inputPassword+"'";               
+   							String SQLStatemen = "Select * from tbuser where IDUser="+ 1 +" and PasswordUser='"+123+"'";               
    							Statement sta = cn.createStatement();               
    							ResultSet rset = sta.executeQuery(SQLStatemen);               
    							rset.next();               
@@ -2294,9 +2263,9 @@ public class AplikasiToko extends JFrame{
    								while (bufUserID.length() < 10){                   
    									bufUserID = bufUserID.concat(TxtIDUserLogin.getText().trim());                 
    								}                 
-   								byte[] ByteBufHakAkses = bufHakAkses.substring(0,10).getBytes();                 
+   								byte[] ByteBufHakAkses = bufHakAkses.substring(0,9).getBytes();                 
    								byte[] ByteBufUserID=bufUserID.getBytes();                 
-   								for (i=0;i<10;i++){                   
+   								for (int i=0;i<10;i++){                   
    									ByteBufHakAkses[i]= (byte)(ByteBufHakAkses[i] ^ ByteBufUserID[i]);                 
    								}                                         
 
@@ -2309,7 +2278,7 @@ public class AplikasiToko extends JFrame{
    									}                   
    								}                         
    							boolean Status;                 
-   							for (i=0;i<10;i++){                   
+   							for (int i=0;i<10;i++){                   
    								Status=(HakAksesUserAktif.substring(i,i+1).equals("1") || HakAksesUserAktif.substring(i,i+1).equals("2"));                   
    								switch (i){                     
    									case 0:MenuBarang.setEnabled(Status); break;                     
@@ -2326,7 +2295,8 @@ public class AplikasiToko extends JFrame{
    						rset.close();                                     
    						JOptionPane.showMessageDialog(null,"ID User atau password salah");                                 
    					}             
-   				} catch (Exception ex){               
+   				} catch (Exception ex){ 
+   					ex.printStackTrace();  
    					JOptionPane.showMessageDialog(null,"Tidak dapat membuka tabel TbUser\n"+ex,"Kesalahan",JOptionPane.ERROR_MESSAGE);             
    				}           
    			}         
